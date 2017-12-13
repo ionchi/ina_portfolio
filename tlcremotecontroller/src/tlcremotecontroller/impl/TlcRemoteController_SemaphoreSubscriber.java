@@ -1,24 +1,27 @@
 package tlcremotecontroller.impl;
 
 import org.eclipse.paho.client.mqttv3.*;
+import org.json.JSONObject;
+
+import java.util.Arrays;
 
 public class TlcRemoteController_SemaphoreSubscriber implements MqttCallback {
 
-	MqttClient myClient;
-	MqttConnectOptions connOpt;
+	private MqttClient myClient;
+	private MqttConnectOptions connOpt;
 
 	static final String BROKER_URL = "tcp://ttmi008.iot.upv.es:1883";
 //	static final String M2MIO_USERNAME = "<m2m.io username>";
 //	static final String M2MIO_PASSWORD_MD5 = "<m2m.io password (MD5 sum of password)>";
 
-	String id = null;
+	private TlcRemoteController tlcRemoteController;
 	
-	public TlcRemoteController_SemaphoreSubscriber(String id) {
-		this.id = id;
+	public TlcRemoteController_SemaphoreSubscriber(TlcRemoteController tlcRemoteController) {
+		this.tlcRemoteController = tlcRemoteController;
 	}
-	
-	protected void _debug(String message) {
-		System.out.println("(TlcRemoteController: " + this.id + ") " + message);
+
+	private void _debug(String message) {
+		System.out.println("(TlcRemoteController: " + this.tlcRemoteController + ") " + message);
 	}
 
 	
@@ -41,7 +44,11 @@ public class TlcRemoteController_SemaphoreSubscriber implements MqttCallback {
 		System.out.println("-------------------------------------------------");
 		
 		// DO SOME MAGIC HERE!
-		
+        message.getPayload();
+        JSONObject msg = new JSONObject(Arrays.toString(message.getPayload()));
+		if (msg.getString("ctlc").equals(tlcRemoteController.getId())){
+			tlcRemoteController.changeSemaphoreStatus(msg.getString("status"));
+		}
 	}
 
 	/**
@@ -53,13 +60,11 @@ public class TlcRemoteController_SemaphoreSubscriber implements MqttCallback {
 	 */
 	public void connect() {
 		// setup MQTT Client
-		String clientID = this.id;
+		String clientID = this.tlcRemoteController.getId();
 		connOpt = new MqttConnectOptions();
 		
 		connOpt.setCleanSession(true);
 		connOpt.setKeepAliveInterval(30);
-//			connOpt.setUserName(M2MIO_USERNAME);
-//			connOpt.setPassword(M2MIO_PASSWORD_MD5.toCharArray());
 		
 		// Connect to Broker
 		try {
