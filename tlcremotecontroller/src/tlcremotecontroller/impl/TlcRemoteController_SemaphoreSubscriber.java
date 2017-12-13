@@ -10,9 +10,7 @@ public class TlcRemoteController_SemaphoreSubscriber implements MqttCallback {
 	private MqttClient myClient;
 	private MqttConnectOptions connOpt;
 
-	static final String BROKER_URL = "tcp://ttmi008.iot.upv.es:1883";
-//	static final String M2MIO_USERNAME = "<m2m.io username>";
-//	static final String M2MIO_PASSWORD_MD5 = "<m2m.io password (MD5 sum of password)>";
+    private static final String BROKER_URL = "tcp://ttmi008.iot.upv.es:1883";
 
 	private TlcRemoteController tlcRemoteController;
 	
