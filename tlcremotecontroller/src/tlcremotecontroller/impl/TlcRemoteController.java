@@ -6,11 +6,12 @@ public class TlcRemoteController {
 	private String id;
 	private String restApiUrl;
 	
-	public TlcRemoteController(String id, String apiRestSemaphoreUrl, String mqttTopic) {
+	public TlcRemoteController(String id, String apiRestSemaphoreUrl, String brokerUrl) {
 		this.id = id;
-		TlcRemoteController_SemaphoreSubscriber subscriber = new TlcRemoteController_SemaphoreSubscriber(this);
+		TlcRemoteController_SemaphoreSubscriber subscriber =
+                new TlcRemoteController_SemaphoreSubscriber(this, brokerUrl);
 		subscriber.connect();
-		subscriber.subscribe(mqttTopic);
+		subscriber.subscribe("valencia/ctlcs/status");
 
 		this.restApi = new TlcRemoteControllerREST(id);
 		this.restApiUrl = apiRestSemaphoreUrl;

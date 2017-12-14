@@ -7,15 +7,16 @@ public class TlcRemoteControllerStarter {
 
 	public static void main(String[] args) {
 
-		TlcRemoteController sc1 = new TlcRemoteController("TLC.net",
-                "http://localhost:8180/tlc","valencia/ctlcs/status");
-		
 		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+            String id = args[0];
+            String restUrl = args[1];
+            String mqttBroker = args[2];
+
+            TlcRemoteController sc1 = new TlcRemoteController(id,restUrl,mqttBroker);
+
+		} catch (ArrayIndexOutOfBoundsException e){
+            System.out.println("ArrayIndexOutOfBoundsException caught");
+        }
 		
 		
 	}

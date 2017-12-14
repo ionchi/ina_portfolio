@@ -10,12 +10,13 @@ public class TlcRemoteController_SemaphoreSubscriber implements MqttCallback {
 	private MqttClient myClient;
 	private MqttConnectOptions connOpt;
 
-    private static final String BROKER_URL = "tcp://ttmi008.iot.upv.es:1883";
+    private String brokerUrl;
 
 	private TlcRemoteController tlcRemoteController;
 	
-	public TlcRemoteController_SemaphoreSubscriber(TlcRemoteController tlcRemoteController) {
+	public TlcRemoteController_SemaphoreSubscriber(TlcRemoteController tlcRemoteController, String brokerURl) {
 		this.tlcRemoteController = tlcRemoteController;
+		this.brokerUrl = brokerURl;
 	}
 
 	private void _debug(String message) {
@@ -43,7 +44,12 @@ public class TlcRemoteController_SemaphoreSubscriber implements MqttCallback {
 		
 		// DO SOME MAGIC HERE!
         message.getPayload();
-        JSONObject msg = new JSONObject(Arrays.toString(message.getPayload()));
+        String stringMsg = new String(message.getPayload());
+        // System.out.println("Message payload: "+new String(message.getPayload()));
+
+
+        JSONObject msg = new JSONObject(stringMsg);
+
 		if (msg.getString("ctlc").equals(tlcRemoteController.getId())){
 			tlcRemoteController.changeSemaphoreStatus(msg.getString("status"));
 		}
@@ -66,7 +72,7 @@ public class TlcRemoteController_SemaphoreSubscriber implements MqttCallback {
 		
 		// Connect to Broker
 		try {
-			myClient = new MqttClient(BROKER_URL, clientID);
+			myClient = new MqttClient(brokerUrl, clientID);
 			myClient.setCallback(this);
 			myClient.connect(connOpt);
 		} catch (MqttException e) {
@@ -74,7 +80,7 @@ public class TlcRemoteController_SemaphoreSubscriber implements MqttCallback {
 			System.exit(-1);
 		}
 		
-		this._debug("Connected to " + BROKER_URL);
+		this._debug("Connected to " + brokerUrl);
 
 	}
 	

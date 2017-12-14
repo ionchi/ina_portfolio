@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Class-Path: java-json.jar org.eclipse.paho.client.mqttv3_1.0.2.jar
+Main-Class: tlcremotecontroller.starter.TlcRemoteControllerStarter
+
