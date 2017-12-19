@@ -11,17 +11,19 @@ public class SmartEcoNavigator {
 	private boolean zoneClosed=false;
     private int pollutionAlertLevel=3;
 
-	public SmartEcoNavigator(String distintivoAmbiental, int matricula, String cltcId, String apiRestSemaphoreUrl, String mqttTopic) {
+	public SmartEcoNavigator(String distintivoAmbiental, int matricula, String cltcId, String apiRestCarUrl, String mqttBroker) {
 		this.distintivoAmbiental=distintivoAmbiental;
 	    this.matricula=matricula;
 	    this.cltcId = cltcId;
-		SmartEcoNavigator_EnvironmentSubscriber environmentSubscriber = new SmartEcoNavigator_EnvironmentSubscriber(this);
-		SmartEcoNavigator_StatusSubscriber statusSubscriber= new SmartEcoNavigator_StatusSubscriber(this);
-        environmentSubscriber.connect();                statusSubscriber.connect();
-        environmentSubscriber.subscribe(mqttTopic);     statusSubscriber.subscribe(mqttTopic);
+		SmartEcoNavigator_EnvironmentSubscriber environmentSubscriber = new SmartEcoNavigator_EnvironmentSubscriber(this,mqttBroker);
+		SmartEcoNavigator_StatusSubscriber statusSubscriber= new SmartEcoNavigator_StatusSubscriber(this,mqttBroker);
+        environmentSubscriber.connect();
+        statusSubscriber.connect();
+        environmentSubscriber.subscribe("valencia/policies/environment");
+        statusSubscriber.subscribe("valencia/ctlcs/status");
 
 		this.restApi = new SmartEcoNavigatorREST();
-		this.restApiUrl = apiRestSemaphoreUrl;
+		this.restApiUrl = apiRestCarUrl;
 
 	}
 

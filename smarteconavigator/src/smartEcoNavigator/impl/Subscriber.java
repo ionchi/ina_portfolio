@@ -1,18 +1,19 @@
-package smartEcoNavigator;
+package smartEcoNavigator.impl;
 
 import org.eclipse.paho.client.mqttv3.*;
 import smartEcoNavigator.impl.SmartEcoNavigator;
 
 public abstract class Subscriber implements MqttCallback{
-    protected MqttClient myClient;
+    private MqttClient myClient;
     private MqttConnectOptions connOpt;
 
-    private static final String BROKER_URL = "tcp://ttmi008.iot.upv.es:1883";
+    private String brokerUrl;
 
     protected SmartEcoNavigator smartEcoNavigator;
 
-    public Subscriber(SmartEcoNavigator smartEcoNavigator) {
+    public Subscriber(SmartEcoNavigator smartEcoNavigator, String brokerUrl) {
         this.smartEcoNavigator = smartEcoNavigator;
+        this.brokerUrl=brokerUrl;
     }
 
     private void _debug(String message) {
@@ -48,7 +49,7 @@ public abstract class Subscriber implements MqttCallback{
 
         // Connect to Broker
         try {
-            myClient = new MqttClient(BROKER_URL, clientID);
+            myClient = new MqttClient(this.brokerUrl, clientID);
             myClient.setCallback(this);
             myClient.connect(connOpt);
         } catch (MqttException e) {
@@ -56,7 +57,7 @@ public abstract class Subscriber implements MqttCallback{
             System.exit(-1);
         }
 
-        this._debug("Connected to " + BROKER_URL);
+        this._debug("Connected to " + this.brokerUrl);
 
     }
 

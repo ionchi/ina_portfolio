@@ -2,14 +2,13 @@ package smartEcoNavigator.impl;
 
 import org.eclipse.paho.client.mqttv3.*;
 import org.json.JSONObject;
-import smartEcoNavigator.Subscriber;
 
 import java.util.Arrays;
 
 public class SmartEcoNavigator_EnvironmentSubscriber extends Subscriber {
 
-    public SmartEcoNavigator_EnvironmentSubscriber(SmartEcoNavigator smartEcoNavigator) {
-        super(smartEcoNavigator);
+    public SmartEcoNavigator_EnvironmentSubscriber(SmartEcoNavigator smartEcoNavigator, String brokerUrl) {
+        super(smartEcoNavigator, brokerUrl);
     }
 
     @Override
