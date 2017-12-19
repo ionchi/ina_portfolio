@@ -1,6 +1,6 @@
 package smartEcoNavigator.impl;
 
-import org.eclipse.paho.client.mqttv3.*;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.json.JSONObject;
 
 import java.util.Arrays;

@@ -1,7 +1,6 @@
 package smartEcoNavigator.impl;
 
 import org.eclipse.paho.client.mqttv3.*;
-import smartEcoNavigator.impl.SmartEcoNavigator;
 
 public abstract class Subscriber implements MqttCallback{
     private MqttClient myClient;
